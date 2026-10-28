@@ -2,7 +2,7 @@ import path from 'node:path'
 
 import { DEV_SERVER_PORTS } from '@any-listen/common/constants'
 import { getPlatform, getOSVersion } from '@any-listen/nodejs/index'
-import { BrowserWindow, Notification, dialog, session } from 'electron'
+import { BrowserWindow, Notification, dialog, screen, session } from 'electron'
 
 import { appState } from '@/app'
 import { collectMusic, uncollectMusic } from '@/modules/player'
@@ -16,6 +16,8 @@ import { winMainState } from './state'
 import { createTaskBarButtons, getWindowSizeInfo } from './utils'
 
 let browserWindow: Electron.BrowserWindow | null = null
+let normalWindowBounds: Electron.Rectangle | null = null
+let wasAlwaysOnTop = false
 
 const winEvent = () => {
   if (!browserWindow) return
@@ -98,6 +100,8 @@ const winEvent = () => {
 
 export const createWindow = () => {
   closeWindow()
+  winMainState.isMiniPlayer = false
+  normalWindowBounds = null
   const windowSizeInfo = getWindowSizeInfo(appState.appSetting['common.windowSizeId'])
 
   const theme = themeState
@@ -253,7 +257,40 @@ export const hideWindow = () => {
 }
 export const setWindowBounds = (options: Partial<Electron.Rectangle>) => {
   if (!browserWindow) return
+  if (winMainState.isMiniPlayer && normalWindowBounds) {
+    normalWindowBounds = { ...normalWindowBounds, ...options }
+    return
+  }
   browserWindow.setBounds(options)
+}
+export const setMiniPlayerMode = (isMini: boolean) => {
+  if (!browserWindow || winMainState.isMiniPlayer === isMini) return
+
+  if (isMini) {
+    const bounds = browserWindow.isFullScreen() ? browserWindow.getNormalBounds() : browserWindow.getBounds()
+    normalWindowBounds = bounds
+    wasAlwaysOnTop = browserWindow.isAlwaysOnTop()
+    if (browserWindow.isFullScreen()) browserWindow.setFullScreen(false)
+
+    const width = 420
+    const height = 116
+    const margin = 16
+    const workArea = screen.getDisplayMatching(bounds).workArea
+    winMainState.isMiniPlayer = true
+    browserWindow.setAlwaysOnTop(true)
+    browserWindow.setBounds({
+      x: Math.max(workArea.x + margin, workArea.x + workArea.width - width - margin),
+      y: Math.max(workArea.y + margin, workArea.y + workArea.height - height - margin),
+      width,
+      height,
+    })
+    return
+  }
+
+  winMainState.isMiniPlayer = false
+  browserWindow.setAlwaysOnTop(wasAlwaysOnTop)
+  if (normalWindowBounds) browserWindow.setBounds(normalWindowBounds)
+  normalWindowBounds = null
 }
 export const setProgressBar = (progress: number, options?: Electron.ProgressBarOptions) => {
   if (!browserWindow) return

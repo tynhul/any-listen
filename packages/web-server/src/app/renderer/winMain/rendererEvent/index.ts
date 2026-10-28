@@ -28,6 +28,7 @@ export type ExposeClientFunctions = Omit<
   | 'exitApp'
   | 'minWindow'
   | 'fullscreenWindow'
+  | 'setMiniPlayerMode'
   | 'getHotkeyStatus'
   | 'createDesktopLyricProcess'
   | 'showOpenDialog'

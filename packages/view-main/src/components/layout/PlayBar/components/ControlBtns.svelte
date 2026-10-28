@@ -8,6 +8,7 @@
   import DesktopLyricBtn from '@/components/common/DesktopLyricBtn/index.svelte'
   // import PlaybackRateBtn from '@/components/common/PlaybackRateBtn.svelte'
   import TogglePlayBarStyleBtn from '@/components/common/TogglePlayBarStyleBtn.svelte'
+  import ToggleMiniPlayerBtn from '@/components/common/ToggleMiniPlayerBtn.svelte'
   // import { t } from '@/plugins/i18n'
 </script>
 
@@ -32,6 +33,9 @@
   <VolumeBtn />
   <TogglePlayModeBtn />
   <DesktopLyricBtn />
+  {#if import.meta.env.VITE_IS_DESKTOP}
+    <ToggleMiniPlayerBtn />
+  {/if}
   <TogglePlayBarStyleBtn />
   <!-- <PlaybackRateBtn /> -->
   <!-- <SoundEffectBtn /> -->

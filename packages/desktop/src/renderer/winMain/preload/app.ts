@@ -72,6 +72,9 @@ export const createClientApp = (main: MainCall) => {
     async fullscreenWindow(isFull) {
       return main.fullscreenWindow(isFull)
     },
+    async setMiniPlayerMode(isMini) {
+      return main.setMiniPlayerMode(isMini)
+    },
     async showOpenDialog(opts) {
       return main.showOpenDialog(opts)
     },

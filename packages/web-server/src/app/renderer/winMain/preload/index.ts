@@ -28,6 +28,7 @@ export type ExposeServerFunctions = Omit<
   | 'getSystemFonts'
   | 'minWindow'
   | 'fullscreenWindow'
+  | 'setMiniPlayerMode'
 >
 export type ClientCall = AnyListen.IPC.ClientIPC
 

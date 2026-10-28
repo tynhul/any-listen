@@ -4,6 +4,8 @@
   import Loading from '@/components/layout/Loading.svelte'
   import Login from '@/views/Login/index.svelte'
   import { useAppAeady, useShowLogin } from '@/modules/app/reactive.svelte'
+  import { miniPlayerState } from '@/modules/app/miniPlayer.svelte'
+  import MiniPlayer from '@/components/layout/MiniPlayer.svelte'
   import { onMount } from 'svelte'
 
   const appReady = useAppAeady()
@@ -18,7 +20,11 @@
   <Icons />
   {#if import.meta.env.VITE_IS_DESKTOP}
     {#if appReady.appAeady}
-      <AppLayout />
+      {#if miniPlayerState.isMiniPlayer}
+        <MiniPlayer />
+      {:else}
+        <AppLayout />
+      {/if}
     {/if}
   {/if}
   {#if import.meta.env.VITE_IS_WEB}

@@ -19,6 +19,7 @@ import {
   getCacheSize as getAppCacheSize,
   minimize,
   setFullScreen,
+  setMiniPlayerMode as resizeMiniPlayerWindow,
   showOpenDialog,
   showSaveDialog,
   toggleDevTools,
@@ -57,6 +58,9 @@ export const createExposeApp = () => {
     },
     async fullscreenWindow(event, isFull) {
       setFullScreen(isFull)
+    },
+    async setMiniPlayerMode(event, isMini) {
+      resizeMiniPlayerWindow(isMini)
     },
 
     async showOpenDialog(event, opts) {

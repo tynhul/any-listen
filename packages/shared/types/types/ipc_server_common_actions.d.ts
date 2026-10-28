@@ -11,6 +11,8 @@ export declare type ServerCommonActions = WarpPromiseRecord<{
   exitApp: () => void
   /** 全屏窗口 */
   fullscreenWindow: (isFull: boolean) => void
+  /** 切换迷你播放器窗口尺寸 */
+  setMiniPlayerMode: (isMini: boolean) => void
 
   showOpenDialog: (options: AnyListen.OpenDialogOptions) => Promise<AnyListen.OpenDialogResult>
   showSaveDialog: (options: AnyListen.SaveDialogOptions) => Promise<AnyListen.SaveDialogResult>

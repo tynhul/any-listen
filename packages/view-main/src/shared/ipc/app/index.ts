@@ -35,6 +35,10 @@ export const exitApp = async () => {
 export const fullscreenWindow = async (isFull: boolean) => {
   return ipc.fullscreenWindow(isFull)
 }
+export const setMiniPlayerWindowMode = async (isMini: boolean) => {
+  if (import.meta.env.VITE_IS_WEB) return
+  return ipc.setMiniPlayerMode(isMini)
+}
 export const showOpenDialog: AnyListen.IPC.ServerIPC['showOpenDialog'] = async (opts) => {
   if (import.meta.env.VITE_IS_WEB) {
     return showFileSelectModal(opts)
